@@ -38,8 +38,8 @@ def project(point):
     z = point[2] + 4.0
     if z == 0:
         z = 0.1
-    x = (point[0] * 4.0)/z* 200 + WINDOW_WIDTH / 2
-    y = (point[1] * 4.0)/z* 200 + WINDOW_HEIGHT / 2
+    x = (point[0] * 4.0)/z* 100 + WINDOW_WIDTH / 2
+    y = (point[1] * 4.0)/z* 100 + WINDOW_HEIGHT / 2
     return (int(x), int(y))
 
 # Основной цикл
