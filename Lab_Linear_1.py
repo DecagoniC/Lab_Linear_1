@@ -109,7 +109,6 @@ while True:
     # Рисование полигонов
     for _, points, color in polygons:
         pygame.draw.polygon(screen, color, points)
-        pygame.draw.polygon(screen, (50, 50, 50), points, 1)
 
     # Обновление экрана
     pygame.display.flip()
