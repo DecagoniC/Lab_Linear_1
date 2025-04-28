@@ -33,7 +33,6 @@ for i in range(u_steps):
         row.append([x, y, z])
     surface_points.append(row)
 
-# Функция проекции 3D -> 2D
 def project(point):
     z = point[2] + 4.0
     if z == 0:
@@ -42,7 +41,6 @@ def project(point):
     y = (point[1] * 4.0)/z* 100 + WINDOW_HEIGHT / 2
     return (int(x), int(y))
 
-# Основной цикл
 clock = pygame.time.Clock()
 while True:
     for event in pygame.event.get():
@@ -63,10 +61,8 @@ while True:
                 rotation_x += (current_y - last_y) * 0.01
                 last_x, last_y = current_x, current_y
 
-    # Очистка экрана
     screen.fill(WHITE)
 
-    # Проецирование и вращение точек
     rotated_points = [[None for _ in range(v_steps)] for _ in range(u_steps)]
     for i in range(u_steps):
         for j in range(v_steps):
@@ -79,7 +75,6 @@ while True:
             z2 = -x * math.sin(rotation_y) + z * math.cos(rotation_y)
             rotated_points[i][j] = [x2, y2, z2]
 
-    # Создание списка полигонов
     polygons = []
     for i in range(u_steps - 1):
         for j in range(v_steps - 1):
@@ -89,12 +84,11 @@ while True:
             p4 = rotated_points[i][j + 1]
             avg_z = (p1[2] + p2[2] + p3[2] + p4[2]) / 4
 
-            # Комбинированный градиент по u и v
             u_factor = i / (u_steps - 1)  # От 0 до 1 по u
             v_factor = (j + 0.5) / (v_steps - 1)  # От 0 до 1 по v
             red = int(255 * u_factor)  # Зависит от u
             green = int(255 * v_factor)  # Зависит от v
-            blue = int(255 * (1 - u_factor * v_factor))  # Зависит от комбинации
+            blue = int(255 * (1 - u_factor * v_factor))
             color = (red, green, blue)
 
             proj_p1 = project(p1)
@@ -103,13 +97,10 @@ while True:
             proj_p4 = project(p4)
             polygons.append((avg_z, [proj_p1, proj_p2, proj_p3, proj_p4], color))
 
-    # Сортировка полигонов по глубине
     polygons.sort(key=lambda x: x[0], reverse=1)
 
-    # Рисование полигонов
     for _, points, color in polygons:
         pygame.draw.polygon(screen, color, points)
 
-    # Обновление экрана
     pygame.display.flip()
     clock.tick(60)
